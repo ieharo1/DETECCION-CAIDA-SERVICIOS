@@ -1,0 +1,14 @@
+{% extends 'monitor/base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h3>Servicios</h3>
+  <a class="btn btn-primary" href="/servicios/nuevo/">+ Agregar</a>
+</div>
+<div class="card shadow-sm"><div class="table-responsive"><table class="table mb-0">
+<thead><tr><th>Nombre</th><th>Tipo</th><th>Endpoint</th><th>Activo</th><th></th></tr></thead>
+<tbody>{% for service in services %}<tr>
+<td>{{ service.name }}</td><td>{{ service.get_service_type_display }}</td><td>{{ service.endpoint }}</td>
+<td>{% if service.is_active %}Sí{% else %}No{% endif %}</td><td><a href="/servicios/{{ service.id }}/editar/" class="btn btn-sm btn-outline-secondary">Editar</a></td>
+</tr>{% endfor %}</tbody>
+</table></div></div>
+{% endblock %}

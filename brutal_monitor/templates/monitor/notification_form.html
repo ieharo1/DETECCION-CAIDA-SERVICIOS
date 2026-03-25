@@ -1,0 +1,11 @@
+{% extends 'monitor/base.html' %}
+{% block content %}
+<div class="card shadow-sm col-lg-8 mx-auto"><div class="card-body">
+<h3 class="mb-3">Configuración de notificaciones</h3>
+<p class="text-muted">Configura correo y Telegram para alertas de caída y recuperación.</p>
+<form method="post">{% csrf_token %}
+{{ form.as_p }}
+<button class="btn btn-primary">Guardar configuración</button>
+</form>
+</div></div>
+{% endblock %}

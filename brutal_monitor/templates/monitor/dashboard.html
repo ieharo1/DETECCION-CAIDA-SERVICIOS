@@ -1,0 +1,49 @@
+{% extends 'monitor/base.html' %}
+{% block content %}
+<div class="row g-3 mb-4">
+  <div class="col-md-3"><div class="card shadow-sm"><div class="card-body"><h6>Total</h6><h2 id="total-count">{{ total }}</h2></div></div></div>
+  <div class="col-md-3"><div class="card shadow-sm border-success"><div class="card-body"><h6>Online</h6><h2 id="online-count" class="text-success">{{ online }}</h2></div></div></div>
+  <div class="col-md-3"><div class="card shadow-sm border-danger"><div class="card-body"><h6>Offline</h6><h2 id="offline-count" class="text-danger">{{ offline }}</h2></div></div></div>
+  <div class="col-md-3"><div class="card shadow-sm"><div class="card-body"><h6>Uptime</h6><h2 id="uptime-count">{{ uptime }}%</h2></div></div></div>
+</div>
+
+<div class="card shadow-sm mb-4">
+  <div class="card-header">Servicios en monitoreo</div>
+  <div class="table-responsive">
+    <table class="table table-striped align-middle mb-0">
+      <thead><tr><th>Nombre</th><th>Endpoint</th><th>Estado</th><th>Último ms</th><th>Intervalo</th></tr></thead>
+      <tbody>
+      {% for service in services %}
+        <tr>
+          <td>{{ service.name }}</td>
+          <td><code>{{ service.endpoint }}</code></td>
+          <td>{% if service.last_status %}<span class="badge bg-success">UP</span>{% else %}<span class="badge bg-danger">DOWN</span>{% endif %}</td>
+          <td>{{ service.last_response_time_ms }} ms</td>
+          <td>{{ service.check_interval_seconds }} s</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="5" class="text-center">No hay servicios creados.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-header">Últimos eventos</div>
+  <div class="table-responsive">
+    <table class="table table-sm table-hover mb-0">
+      <thead><tr><th>Hora</th><th>Servicio</th><th>Estado</th><th>HTTP</th><th>Tiempo</th><th>Error</th></tr></thead>
+      <tbody id="logs-body">
+      {% for log in last_logs %}
+        <tr>
+          <td>{{ log.checked_at }}</td><td>{{ log.service.name }}</td>
+          <td>{% if log.is_up %}<span class="badge bg-success">UP</span>{% else %}<span class="badge bg-danger">DOWN</span>{% endif %}</td>
+          <td>{{ log.status_code|default:'-' }}</td><td>{{ log.response_time_ms }} ms</td><td>{{ log.error_message|default:'-' }}</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
