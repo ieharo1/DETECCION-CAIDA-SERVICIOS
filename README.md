@@ -1,14 +1,14 @@
 # 🚨 Detección de Caídas de Servicios
 
 <p align="center">
-  <img src="https://img.icons8.com/color/200/000000/online-support.png" alt="Brutal Monitor Logo" width="200"/>
+  <img src="https://img.icons8.com/color/200/000000/online-support.png" alt="Detección de Caídas de Servicios Logo" width="200"/>
 </p>
 
 ---
 
 ## 📱 Descripción
 
-**Brutal Monitor** es un sistema de observabilidad en **Django + PostgreSQL** para vigilar URLs y APIs en tiempo real.
+**Detección de Caídas de Servicios** es un sistema de observabilidad en **Django + PostgreSQL** para vigilar URLs y APIs en tiempo real.
 
 > El sistema ejecuta checks cada segundo (configurable por servicio), detecta caídas y recuperaciones, guarda historial para indicadores, y notifica por correo o Telegram.
 
