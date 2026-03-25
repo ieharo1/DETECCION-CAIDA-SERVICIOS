@@ -1,0 +1,54 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: monitoring
+      POSTGRES_USER: monitor
+      POSTGRES_PASSWORD: monitorpass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U monitor -d monitoring"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  web:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DEBUG: "0"
+      SECRET_KEY: super-secret-change-me
+      POSTGRES_DB: monitoring
+      POSTGRES_USER: monitor
+      POSTGRES_PASSWORD: monitorpass
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      ALLOWED_HOSTS: "*"
+      CREATE_SUPERUSER: "1"
+      DJANGO_SUPERUSER_USERNAME: admin
+      DJANGO_SUPERUSER_EMAIL: admin@local.com
+      DJANGO_SUPERUSER_PASSWORD: admin123456
+    ports:
+      - "8000:8000"
+
+  worker:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DEBUG: "0"
+      SECRET_KEY: super-secret-change-me
+      POSTGRES_DB: monitoring
+      POSTGRES_USER: monitor
+      POSTGRES_PASSWORD: monitorpass
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      ALLOWED_HOSTS: "*"
+    command: ["python", "manage.py", "check_services"]
+
+volumes:
+  postgres_data:
